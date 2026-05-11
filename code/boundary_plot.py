@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from skimage.measure import marching_cubes
-
 from pig_value_iteration import optimal_pig_value_iteration
 
 def build_policy_volume(policy, goal: int = 100):
