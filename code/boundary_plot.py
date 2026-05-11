@@ -4,7 +4,6 @@ from skimage.measure import marching_cubes
 
 from pig_value_iteration import optimal_pig_value_iteration
 
-
 def build_policy_volume(policy, goal: int = 100):
     """
     Builds a 3D array where:
