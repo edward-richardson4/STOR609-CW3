@@ -30,8 +30,7 @@ def piglet_value_iteration(iterations: int = 25):
 
     def V(i: int, j: int, k: int) -> float:
         """
-        Gets the current value of a state
-        If the player can already win by holding, return 1
+        Gets the current value of a state. If the player can already win by holding, return 1
         """
         if i + k >= 2:
             return 1
@@ -41,8 +40,7 @@ def piglet_value_iteration(iterations: int = 25):
     for _ in range(iterations):
         for i, j, k in states:
             flip_value = 0.5 * (
-                (1.0 - V(j, i, 0))
-                + V(i, j, k + 1)
+                (1.0 - V(j, i, 0)) + V(i, j, k + 1)
             )
             hold_value = 1.0 - V(j, i + k, 0)
             # Selects whether to flip or hold
