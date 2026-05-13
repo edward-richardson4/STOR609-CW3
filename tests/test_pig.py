@@ -2,7 +2,7 @@ import pytest
 from pytest import approx
 
 
-from code.pig_value_iteration import optimal_pig_value_iteration
+from implementation.pig_value_iteration import optimal_pig_value_iteration
 
 @pytest.fixture(scope="module")
 def optimal_pig_data():

@@ -1,7 +1,7 @@
 import pytest
 from pytest import approx
 
-from code.piglet import piglet_value_iteration
+from implementation.piglet import piglet_value_iteration
 
 @pytest.fixture(scope="module")
 def piglet_final_values():
