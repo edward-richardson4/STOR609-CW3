@@ -2,8 +2,8 @@
 Recreate Figure 7: win-probability contours for optimal play in Pig.
 
 The plot shows isosurfaces of the optimal value function V(i, j, k), where:
-    i = Player 1/current-player score
-    j = Player 2/opponent score
+    i = Player 1 score
+    j = Player 2 score
     k = current turn total
 
 Default contour levels are 3%, 9%, 27%, and 81%.
@@ -27,7 +27,6 @@ from skimage.measure import marching_cubes
 State = tuple[int, int, int]
 ValueFunction = dict[State, float]
 
-
 def load_or_compute_value_function(
     script_dir: Path,
     cache_path: Path,
@@ -42,25 +41,20 @@ def load_or_compute_value_function(
         if not isinstance(value_func, dict):
             raise TypeError(f"Expected {cache_path} to contain a dict, got {type(value_func)!r}")
         return value_func
-
     sys.path.insert(0, str(script_dir))
     from pig_value_iteration import optimal_pig_value_iteration
-
     _policy, value_func = optimal_pig_value_iteration(goal=goal, epsilon=epsilon)
     with cache_path.open("wb") as f:
         pickle.dump(value_func, f, protocol=pickle.HIGHEST_PROTOCOL)
     return value_func
 
-
 def build_value_volume(value_func: ValueFunction, *, goal: int = 100) -> np.ndarray:
     """
     Convert the sparse value-function dictionary into a dense 3D grid.
-
     The output is indexed as volume[i, j, k]. Terminal states with i + k >= goal
     are assigned value 1 because holding wins immediately.
     """
     volume = np.empty((goal + 1, goal + 1, goal + 1), dtype=np.float32)
-
     for i in range(goal + 1):
         for j in range(goal + 1):
             for k in range(goal + 1):
@@ -72,9 +66,7 @@ def build_value_volume(value_func: ValueFunction, *, goal: int = 100) -> np.ndar
                     volume[i, j, k] = 1.0
                 else:
                     volume[i, j, k] = value_func[(i, j, k)]
-
     return volume
-
 
 def add_isosurface(
     ax: plt.Axes,
@@ -86,7 +78,6 @@ def add_isosurface(
 ) -> None:
     """Extract and draw one value-function isosurface."""
     verts, faces, _normals, _values = marching_cubes(volume, level=level, spacing=(1, 1, 1))
-
     # marching_cubes returns vertices as (i, j, k). The figure labels x as j,
     # depth as i, and vertical as k, so reorder to (j, i, k).
     plotted = np.column_stack((verts[:, 1], verts[:, 0], verts[:, 2]))
@@ -98,7 +89,6 @@ def add_isosurface(
         alpha=alpha,
     )
     ax.add_collection3d(mesh)
-
 
 def label_contours(
     ax: plt.Axes,
@@ -128,7 +118,6 @@ def label_contours(
             else None,
         )
 
-
 def plot_win_probability_contours(
     value_func: ValueFunction,
     *,
@@ -139,10 +128,8 @@ def plot_win_probability_contours(
 ) -> tuple[plt.Figure, plt.Axes]:
     """Create the Figure 7 style 3D win-probability contour plot."""
     volume = build_value_volume(value_func, goal=goal)
-
     fig = plt.figure(figsize=(5.2, 4.6), dpi=180)
     ax = fig.add_subplot(111, projection="3d")
-
     # Darker surfaces represent lower win probabilities, lighter surfaces higher ones.
     grays = {
         0.03: "0.08",
@@ -186,7 +173,6 @@ def plot_win_probability_contours(
         plt.show()
     return fig, ax
 
-
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Recreate Pig Figure 7 win-probability contours.")
     parser.add_argument("--goal", type=int, default=100)
@@ -200,7 +186,6 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output", type=Path, default=None, help="Optional image output path.")
     parser.add_argument("--no-show", action="store_true", help="Save without opening an interactive window.")
     return parser.parse_args()
-
 
 def main() -> None:
     args = parse_args()
@@ -217,7 +202,6 @@ def main() -> None:
         output=args.output,
         show=not args.no_show,
     )
-
 
 if __name__ == "__main__":
     main()
