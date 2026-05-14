@@ -131,6 +131,29 @@ def modelling_state_space(
         )
     return reachable
 
+def reachable_states_where_rolling_is_optimal(
+    policy: Policy,
+    reachable: np.ndarray,
+    *,
+    goal: int = 100,
+) -> np.ndarray:
+    """
+    Return every reachable state for which the optimal policy says to roll.
+
+    The returned array has shape (n, 3). Each row is a state stored as:
+    [current_score, opponent_score, turn_total].
+    """
+    rolling_states: list[State] = []
+    for current_score, opponent_score, turn_total in np.argwhere(reachable == 1):
+        state = (
+            int(current_score),
+            int(opponent_score),
+            int(turn_total),
+        )
+        if policy_action(policy, *state, goal) == "roll":
+            rolling_states.append(state)
+    return np.array(rolling_states, dtype=np.int16)
+
 def main() -> None:
     """
     Compute an optimal Pig policy, simulate many games, and save the reachable states. The simulation tries several values of
@@ -166,10 +189,26 @@ def main() -> None:
             die_sides=die_sides,
         )
         print(f"finished looping for p = {probability}", flush=True)
-    # Save the reachable-state array 
+    # Save the reachable-state array
     output_path = Path("reachable_states.npy")
     np.save(output_path, reachable_states)
     print(f"saved reachable states to {output_path}", flush=True)
+
+    # Save the subset of reachable states where the optimal action is to roll.
+    # This file contains an array of shape (n, 3), where each row is:
+    # [current_score, opponent_score, turn_total].
+    reachable_rolling_states = reachable_states_where_rolling_is_optimal(
+        policy,
+        reachable_states,
+        goal=goal,
+    )
+    rolling_output_path = Path("reachable_states_roll_optimal.npy")
+    np.save(rolling_output_path, reachable_rolling_states)
+    print(
+        f"saved {len(reachable_rolling_states)} reachable roll-optimal states to "
+        f"{rolling_output_path}",
+        flush=True,
+    )
 
 if __name__ == "__main__":
     main()
