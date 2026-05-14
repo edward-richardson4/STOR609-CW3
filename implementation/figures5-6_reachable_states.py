@@ -5,7 +5,7 @@ import numpy as np
 
 def load_reachable_states(path: str | Path = "reachable_states.npy") -> np.ndarray:
     """
-    Load reachable states from a NumPy .npy file.
+    Load reachable states from a .npy file.
 
     The expected array layout is:
         reachable[i, j, k]
@@ -25,7 +25,6 @@ def load_reachable_states(path: str | Path = "reachable_states.npy") -> np.ndarr
     if reachable.ndim != 3:
         raise ValueError(f"Expected a 3D array, got shape {reachable.shape}")
     return reachable.astype(bool)
-
 
 def load_roll_optimal_states(
     path: str | Path = "reachable_states_roll_optimal.npy",
@@ -66,7 +65,6 @@ def load_roll_optimal_states(
     grid[coordinates[:, 0], coordinates[:, 1], coordinates[:, 2]] = True
     return grid
 
-
 def downsample_boolean_grid(grid: np.ndarray, step: int) -> np.ndarray:
     """
     Downsample a 3D Boolean grid by taking one point every `step` cells.
@@ -75,7 +73,6 @@ def downsample_boolean_grid(grid: np.ndarray, step: int) -> np.ndarray:
     if step < 1:
         raise ValueError("step must be at least 1")
     return grid[::step, ::step, ::step]
-
 
 def plot_3d_view(
     states: np.ndarray,
