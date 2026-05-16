@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "STOR609-CW3"
+version = "1.0.0"
+
+maintainers = [
+  { name="Edward Richardson", email="3dward3ichardson@gmail.com" },
+    name="Jack Strong", email="12jstrong12@gmail.com" },
+    name="Sylwia Bathe-Taylor", email="3?" },
+    name="Riya Raheem", email="?" }
+]
+authors = [
+  { name="Edward Richardson" },
+  { name="Jack Strong" },
+  { name="Sylwia Bathe-Taylor" },
+  { name="Riya Raheem" }
+]
+
+description = "STOR609 Coursework 3 Solution"
+
+requires-python = ">=3.10"
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+
+dependencies = []
+
+[project.urls]
+homepage = "https://github.com/edward-richardson4/STOR609-CW3"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
