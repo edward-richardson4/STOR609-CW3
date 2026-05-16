@@ -7,6 +7,9 @@ name = "STOR609-CW3"
 version = "1.0.0"
 maintainers = [
   { name="Edward Richardson", email="3dward3ichardson@gmail.com" },
+  { name="Jack Strong", email="12jstrong12@gmail.com" },
+  { name="Sylwia Bathe-Taylor", email="s.bathe-taylor@lancaster.ac.uk" },
+  { name="Riya Raheem", email="riyaraheemk@gmail.com" },
 ]
 authors = [
   { name="Edward Richardson" },
